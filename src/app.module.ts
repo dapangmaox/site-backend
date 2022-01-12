@@ -9,7 +9,14 @@ import { CategoryModule } from './category/category.module';
 import { TagModule } from './tag/tag.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), CatsModule, ArticleModule, UserModule, CategoryModule, TagModule],
+  imports: [
+    TypeOrmModule.forRoot(),
+    CatsModule,
+    ArticleModule,
+    UserModule,
+    CategoryModule,
+    TagModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
