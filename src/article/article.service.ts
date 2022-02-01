@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/category/entities/category.entity';
-import { Repository } from 'typeorm';
+import { Tag } from 'src/tag/entities/tag.entity';
+import { FindManyOptions, Repository } from 'typeorm';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { Article } from './entities/article.entity';
@@ -21,11 +22,22 @@ export class ArticleService {
 
     article.category = { ...new Category(), id: createArticleDto.categoryId };
 
-    return this.articleRepository.save(article);
+    article.tags = createArticleDto.tagIds?.map((tagId) => {
+      const tag = new Tag();
+      tag.id = tagId;
+      return tag;
+    });
+
+    const newArticle = await this.articleRepository.save(article);
+
+    return newArticle;
   }
 
   findAll(): Promise<Article[]> {
-    return this.articleRepository.find();
+    const options: FindManyOptions = {
+      relations: ['category', 'tags'],
+    };
+    return this.articleRepository.find(options);
   }
 
   findOne(id: string) {

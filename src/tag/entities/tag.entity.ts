@@ -9,6 +9,6 @@ export class Tag {
   @Column({ unique: true })
   value: string;
 
-  // @ManyToMany(() => Article, (article) => article.tags)
-  // articles: Article[];
+  @ManyToMany(() => Article, (article) => article.tags)
+  articles: Article[];
 }

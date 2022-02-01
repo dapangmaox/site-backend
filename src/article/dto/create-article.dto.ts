@@ -11,6 +11,6 @@ export class CreateArticleDto {
   readonly contents: string;
   @ApiProperty()
   readonly categoryId: number;
-  // @ApiProperty()
-  // readonly tagIds: number[];
+  @ApiProperty({ isArray: true })
+  readonly tagIds: number[];
 }

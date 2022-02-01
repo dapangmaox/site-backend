@@ -1,8 +1,11 @@
 import { Category } from 'src/category/entities/category.entity';
+import { Tag } from 'src/tag/entities/tag.entity';
 import {
   Column,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -30,4 +33,8 @@ export class Article {
   @ManyToOne(() => Category, (category) => category.articles)
   @JoinColumn()
   category: Category;
+
+  @ManyToMany(() => Tag, (tag) => tag.articles)
+  @JoinTable()
+  tags: Tag[];
 }
