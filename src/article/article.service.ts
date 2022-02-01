@@ -41,11 +41,27 @@ export class ArticleService {
   }
 
   findOne(id: string) {
-    return this.articleRepository.findOne({ id });
+    return this.articleRepository.findOne(
+      { id },
+      { relations: ['category', 'tags'] },
+    );
   }
 
-  update(id: number, updateArticleDto: UpdateArticleDto) {
-    // return this.articleRepository.update(id, updateArticleDto);
+  async update(id: string, updateArticleDto: UpdateArticleDto) {
+    const toUpdate = await this.articleRepository.findOne(id);
+    toUpdate.title = updateArticleDto.title || toUpdate.title;
+    toUpdate.cover = updateArticleDto.cover || toUpdate.cover;
+    toUpdate.contents = updateArticleDto.contents || toUpdate.contents;
+    toUpdate.categoryId = updateArticleDto.categoryId || toUpdate.categoryId;
+    if (updateArticleDto.tagIds?.length > 0) {
+      const tags = updateArticleDto.tagIds.map((tagId) => {
+        const tag = new Tag();
+        tag.id = tagId;
+        return tag;
+      });
+      toUpdate.tags = tags;
+    }
+    this.articleRepository.save(toUpdate);
   }
 
   remove(id: number) {

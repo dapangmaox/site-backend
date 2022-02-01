@@ -31,6 +31,9 @@ export class Article {
   @Column()
   author: string;
 
+  @Column()
+  categoryId: number;
+
   @ManyToOne(() => Category, (category) => category.articles)
   @JoinColumn()
   category: Category;
