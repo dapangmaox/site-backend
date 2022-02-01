@@ -4,13 +4,13 @@ export class CreateArticleDto {
   @ApiProperty()
   readonly title: string;
   @ApiProperty()
-  readonly description: string;
+  readonly author: string;
   @ApiProperty()
   readonly cover: string;
   @ApiProperty()
-  readonly body: string;
+  readonly contents: string;
   @ApiProperty()
-  readonly category: string;
-  @ApiProperty()
-  readonly tagList: string[];
+  readonly categoryId: number;
+  // @ApiProperty()
+  // readonly tagIds: number[];
 }

@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Category } from 'src/category/entities/category.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Article {
@@ -8,15 +15,19 @@ export class Article {
   @Column()
   title: string;
 
-  @Column()
-  description: string;
+  @Column({ default: '' })
+  brief: string;
 
-  @Column()
+  @Column({ default: '' })
   cover: string;
 
   @Column('text')
-  body: string;
+  contents: string;
 
   @Column()
   author: string;
+
+  @ManyToOne(() => Category, (category) => category.articles)
+  @JoinColumn()
+  category: Category;
 }

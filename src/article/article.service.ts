@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Category } from 'src/category/entities/category.entity';
 import { Repository } from 'typeorm';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
@@ -11,16 +12,16 @@ export class ArticleService {
     @InjectRepository(Article)
     private articleRepository: Repository<Article>,
   ) {}
-  create(createArticleDto: CreateArticleDto) {
-    let article = new Article();
-    article.author = '大胖猫';
+  async create(createArticleDto: CreateArticleDto) {
+    const article = new Article();
     article.title = createArticleDto.title;
-    article.description = createArticleDto.description;
+    article.author = createArticleDto.author;
     article.cover = createArticleDto.cover;
-    article = { ...article, ...createArticleDto };
-    console.log(article);
+    article.contents = createArticleDto.contents;
 
-    this.articleRepository.save(article);
+    article.category = { ...new Category(), id: createArticleDto.categoryId };
+
+    return this.articleRepository.save(article);
   }
 
   findAll(): Promise<Article[]> {
@@ -32,7 +33,7 @@ export class ArticleService {
   }
 
   update(id: number, updateArticleDto: UpdateArticleDto) {
-    return `This action updates a #${id} article`;
+    // return this.articleRepository.update(id, updateArticleDto);
   }
 
   remove(id: number) {
