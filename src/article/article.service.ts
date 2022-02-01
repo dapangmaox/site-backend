@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Category } from 'src/category/entities/category.entity';
 import { Tag } from 'src/tag/entities/tag.entity';
 import { FindManyOptions, Repository } from 'typeorm';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -20,7 +19,7 @@ export class ArticleService {
     article.cover = createArticleDto.cover;
     article.contents = createArticleDto.contents;
 
-    article.category = { ...new Category(), id: createArticleDto.categoryId };
+    article.categoryId = createArticleDto.categoryId;
 
     article.tags = createArticleDto.tagIds?.map((tagId) => {
       const tag = new Tag();
@@ -64,7 +63,7 @@ export class ArticleService {
     this.articleRepository.save(toUpdate);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} article`;
+  remove(id: string) {
+    return this.articleRepository.delete(id);
   }
 }
